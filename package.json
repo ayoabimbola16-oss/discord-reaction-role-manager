@@ -1,0 +1,20 @@
+{
+  "name": "discord-reaction-role-manager",
+  "version": "1.0.0",
+  "private": true,
+  "description": "One-shot CLI utility for adding or removing Discord roles based on message reactions.",
+  "type": "module",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "start": "node src/index.js",
+    "add": "node src/index.js add",
+    "remove": "node src/index.js remove",
+    "test": "node --test",
+    "check": "node --check src/index.js && node --check src/cli.js && node --check src/config.js && node --check src/discord.js && node --check src/logger.js && node --check src/messageFinder.js && node --check src/reactions.js && node --check src/roles.js && node --check tests/config.test.js && node --check tests/reactions.test.js && node --check tests/roles.test.js"
+  },
+  "dependencies": {
+    "discord.js": "^14.25.1",
+    "dotenv": "^16.6.1"
+  },
+  "license": "MIT"
+}
