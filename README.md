@@ -146,10 +146,10 @@ DISCORD_ROLE_ID=1536883883075698708
 
 ```bash
 # Add roles to all users who reacted
-npm run add
+node src/index.js add
 
 # Remove roles from all users who reacted
-npm run remove
+node src/index.js remove
 ```
 
 ### Advanced Usage (Passing IDs via Command Line)
