@@ -27,7 +27,7 @@ Discord community managers often run polls, announcements, or opt-in messages wh
 
 ---
 
-## 🏆 Bounty Submission & Judge Compliance
+## 🏆 Bounty Submission
 
 Built specifically for the **Gibwork $60 USDC Bounty ("Create a Discord Script")**.
 
