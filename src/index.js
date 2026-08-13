@@ -5,6 +5,7 @@ import { createLogger } from './logger.js';
 import { createDiscordClient, validateGuildAndRole } from './discord.js';
 import { findMessage } from './messageFinder.js';
 import { fetchAllReactionUsers } from './reactions.js';
+import { fetchAllPollVoters } from './polls.js';
 import { processUsers, safeError } from './roles.js';
 
 async function main() {
@@ -22,10 +23,20 @@ async function main() {
     logger.info(`Server found: ${guild.name}`);
     const message = await findMessage(guild, config.messageId, config.channelId, logger);
     logger.info(`Message found in #${message.channel?.name || message.channelId}.`);
-    logger.info('Fetching reaction users...');
-    const userIds = await fetchAllReactionUsers(message, config.emoji);
-    if (userIds.size === 0) logger.info(config.emoji ? 'No users reacted with the selected emoji.' : 'No users reacted to this message.');
-    else logger.info(`Unique users found: ${userIds.size}`);
+    
+    let userIds;
+    if (config.type === 'poll') {
+      logger.info('Fetching poll voters...');
+      userIds = await fetchAllPollVoters(message);
+      if (userIds.size === 0) logger.info('No users voted on this poll.');
+      else logger.info(`Unique voters found: ${userIds.size}`);
+    } else {
+      logger.info('Fetching reaction users...');
+      userIds = await fetchAllReactionUsers(message, config.emoji);
+      if (userIds.size === 0) logger.info(config.emoji ? 'No users reacted with the selected emoji.' : 'No users reacted to this message.');
+      else logger.info(`Unique reactors found: ${userIds.size}`);
+    }
+    
     const summary = await processUsers({ guild, role, userIds, action: config.action, dryRun: config.dryRun, logger });
     logger.summary(summary, config.action, Date.now() - started);
     process.exitCode = 0;

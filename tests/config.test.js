@@ -7,13 +7,21 @@ const tokenEnv = { DISCORD_BOT_TOKEN: 'test-token', DISCORD_SERVER_ID: '12345678
 test('CLI values override environment values', () => {
   const config = createConfig(parseCli(['add', '--server', '22345678901234567', '--message', '22345678901234568', '--role', '22345678901234569']), tokenEnv);
   assert.equal(config.action, 'ADD'); assert.equal(config.serverId, '22345678901234567');
+  assert.equal(config.type, 'reaction'); // default
 });
-test('invalid action, IDs, and token are rejected', () => {
+test('invalid action, IDs, token, and type are rejected', () => {
   assert.throws(() => createConfig({ action: 'DELETE' }, tokenEnv), /Action/);
   assert.throws(() => createConfig({ action: 'ADD', server: 'bad', message: tokenEnv.DISCORD_MESSAGE_ID, role: tokenEnv.DISCORD_ROLE_ID }, tokenEnv), /snowflake/);
   assert.throws(() => createConfig({ action: 'ADD' }, { ...tokenEnv, DISCORD_BOT_TOKEN: '' }), /BOT_TOKEN/);
+  assert.throws(() => createConfig({ action: 'ADD', type: 'invalid' }, tokenEnv), /Type must be reaction or poll/);
 });
 test('parser handles options and help', () => {
-  assert.deepEqual(parseCli(['remove', '--dry-run', '--emoji', '👍']), { action: 'REMOVE', dryRun: true, emoji: '👍' });
+  assert.deepEqual(parseCli(['remove', '--dry-run', '--emoji', '👍', '--type', 'poll']), { action: 'REMOVE', dryRun: true, emoji: '👍', type: 'poll' });
   assert.deepEqual(parseCli(['--help']), { help: true });
+});
+test('validates types and case-insensitivity', () => {
+  const configPoll = createConfig({ action: 'ADD', type: 'POLL' }, tokenEnv);
+  assert.equal(configPoll.type, 'poll');
+  const configReaction = createConfig({ action: 'ADD', type: 'Reaction' }, tokenEnv);
+  assert.equal(configReaction.type, 'reaction');
 });

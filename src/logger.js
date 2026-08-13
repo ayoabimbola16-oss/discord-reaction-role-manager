@@ -2,9 +2,10 @@ export function createLogger(write = console.log) {
   return {
     header(config) {
       write('========================================');
-      write('Discord Reaction Role Manager');
+      write('Discord Reaction & Poll Role Manager');
       write('========================================');
       write(`Action: ${config.action}`);
+      write(`Type:   ${config.type.toUpperCase()}`);
       write(`Server: ${config.serverId}`);
       write(`Message: ${config.messageId}`);
       write(`Role: ${config.roleId}`);
@@ -19,7 +20,7 @@ export function createLogger(write = console.log) {
       const verb = action === 'ADD' ? 'added' : 'removed';
       const satisfied = action === 'ADD' ? 'Already had role' : 'Already absent';
       write(''); write('========================================'); write('Operation Complete'); write('========================================');
-      write(`Reactors found: ${summary.reactors}`);
+      write(`Target users found: ${summary.reactors}`);
       write(`Roles ${verb}: ${summary.changed}`);
       write(`${satisfied}: ${summary.alreadySatisfied}`);
       write(`Not in server: ${summary.notMember}`);

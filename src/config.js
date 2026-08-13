@@ -11,13 +11,16 @@ export function createConfig(parsed, env = process.env) {
   if (!['ADD', 'REMOVE'].includes(parsed.action)) throw new Error('Action must be ADD or REMOVE.');
   const token = env.DISCORD_BOT_TOKEN;
   if (!token || token === 'replace_with_your_bot_token') throw new Error('Missing DISCORD_BOT_TOKEN in the environment.');
+  const type = (parsed.type || 'reaction').toLowerCase();
+  if (!['reaction', 'poll'].includes(type)) throw new Error('Type must be reaction or poll.');
   const config = {
     action: parsed.action,
+    type,
     serverId: idFrom(parsed.server, env.DISCORD_SERVER_ID, 'SERVER'),
     messageId: idFrom(parsed.message, env.DISCORD_MESSAGE_ID, 'MESSAGE'),
     roleId: idFrom(parsed.role, env.DISCORD_ROLE_ID, 'ROLE'),
     channelId: parsed.channel || env.DISCORD_CHANNEL_ID || undefined,
-    emoji: parsed.emoji,
+    emoji: type === 'reaction' ? parsed.emoji : undefined,
     dryRun: Boolean(parsed.dryRun),
     token
   };
