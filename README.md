@@ -23,7 +23,7 @@ Think of this tool as an **automated helper for Discord community managers**:
 [1. User reacts to a message OR votes on a poll]
                         │
                         ▼
-[2. Moderator runs script on local computer:  npm run add]
+[2. Moderator runs script on local computer:  node src/index.js add]
                         │
                         ▼
 [3. Script logs in -> Finds reactors/voters -> Assigns role]
@@ -36,7 +36,7 @@ Unlike full-time Discord bots that run 24/7 on expensive servers, this tool is a
 
 ---
 
-## 🏆 Bounty Submission & Judge Compliance
+## 🏆 Bounty Submission
 
 Built specifically for the **Gibwork $60 USDC Bounty ("Create a Discord Script")**.
 
