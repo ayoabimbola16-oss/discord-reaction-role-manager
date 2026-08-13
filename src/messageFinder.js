@@ -3,7 +3,7 @@ function isMessageCapable(channel) {
 }
 
 async function tryMessage(channel, messageId) {
-  try { return await channel.messages.fetch(messageId); }
+  try { return await channel.messages.fetch({ message: messageId, force: true }); }
   catch (error) {
     if ([10003, 10008, 50001, 50013].includes(error?.code) || error?.status === 404 || error?.status === 403) return null;
     throw error;

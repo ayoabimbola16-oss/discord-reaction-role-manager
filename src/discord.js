@@ -1,7 +1,14 @@
 import { Client, GatewayIntentBits } from 'discord.js';
 
 export function createDiscordClient() {
-  return new Client({ intents: [GatewayIntentBits.Guilds] });
+  return new Client({
+    intents: [
+      GatewayIntentBits.Guilds,
+      GatewayIntentBits.GuildMessages,
+      GatewayIntentBits.GuildMessageReactions,
+      GatewayIntentBits.GuildMessagePolls,
+    ]
+  });
 }
 
 export async function validateGuildAndRole(client, config) {
